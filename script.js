@@ -3,13 +3,13 @@
 const resetBtn = document.querySelector('button.again');
 const guessBtn = document.querySelector('button.check');
 const guessNumber = document.querySelector('input.guess');
-const score = document.querySelector('p.label-score');
+const score = document.querySelector('span.score');
 const userMessage = document.querySelector('p.message');
 const displayNumber = document.querySelector('div.number');
+const highScoreLabel = document.querySelector('span.highscore');
+let highScore = 0;
 let allowedGuesses = 20;
 let remainingGuesses = allowedGuesses;
-
-console.log(resetBtn, guessBtn, guessNumber, score, userMessage, displayNumber);
 
 let secretNumber;
 
@@ -18,18 +18,24 @@ const resetGame = () => {
   score.textContent = remainingGuesses;
   userMessage.textContent = `Start Guessing ...`;
   displayNumber.textContent = `?`;
-  guessBtn.style.visibility = 'visibile';
+  guessBtn.style.visibility = 'visible';
   guessNumber.value = '';
   document.querySelector('body').style.backgroundColor = 'black';
 };
 
+const setHighScore = () => {
+  if (remainingGuesses > highScore) {
+    highScore = remainingGuesses;
+    highScoreLabel.textContent = highScore;
+  }
+};
+
 const endGame = status => {
   if (status === 'success') {
-    userMessage.textContent = ` Well done you compled the game in ${
-      allowedGuesses - remainingGuesses + 1
-    } attempts!
+    userMessage.textContent = ` Well done you compled the game!
         Click again button to play again!`;
     document.querySelector('body').style.backgroundColor = '#60b347';
+    setHighScore();
   } else if (status === 'failure') {
     userMessage.textContent = `Sorry you have ran out of guesses!
         Click again button to play again!`;
